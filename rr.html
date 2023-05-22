@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+  <script>
+    function addEntryHere() {
+      var entry = document.getElementById("entry").value.trim();
+      if (entry === "") {
+        alert("The Invalid entry");
+        return;
+      }
+
+      var entryParts = entry.split(",");
+      if (entryParts.length !== 3) {
+        alert(" The Invalid entry");
+        return;
+      }
+
+      var directoryId = entryParts[0].trim();
+      var description = entryParts[1].trim();
+      var duration = entryParts[2].trim();
+
+      if (directoryId === "" || description === "" || duration === "") {
+        alert("note, Invalid entry");
+        return;
+      }
+
+      var entryElement = document.createElement("p");
+      entryElement.textContent = directoryId + " " + description + " " + duration;
+      document.getElementById("entries").appendChild(entryElement);
+    }
+
+    function summaryHere() {
+      var entries = document.querySelectorAll("#entries p");
+      var summaryElement = document.getElementById("summary");
+      summaryElement.innerHTML = "Number of entries: " + entries.length + "<br>";
+      //
+      var sortedEntries = Array.from(entries).sort(function(m, n) {
+        var durationA = parseInt(m.textContent.split(" ")[2]);
+        var durationB = parseInt(n.textContent.split(" ")[2]);
+        return durationB - durationA;
+      });
+
+      sortedEntries.forEach(function(entry) {
+        summaryElement.innerHTML += entry.textContent + "<br>";
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>For The Entry</h1>
+  <form>
+    <label for="">Entry:</label>
+    <input type="text" id="entry" title="input">
+    <br><br>
+    <button type="button" onclick="addEntryHere()">Add Entry</button>
+    <button type="button" onclick="summaryHere()">Summary</button>
+  </form>
+  <h2>Entries</h2>
+  <div id="entries"></div>
+  <h4>Summary</h4>
+  <div id="summary"></div>
+</body>
+</html>
